@@ -1,23 +1,73 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+
+const UserGreeting = (props) => {
+  return <h2>Welcome back!</h2>;
+}
+
+const GuestGreeting = (props) => {
+  return <h2>Please sign in.</h2>;
+}
+
+const Greeting = (props) => {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn){
+    return <UserGreeting />;
+  }
+  return <GuestGreeting />;
+}
+
+const LoginButton = (props) => {
+  return(
+    <button onClick={props.onClick}>
+      Login 
+    </button>
+  )
+}
+
+const LogoutButton = (props) =>{
+  return (
+    <button onClick={props.onClick}>
+      Logout
+    </button>
+  )
+}
+
+class LoginControl extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {isLoggedIn: false};
+  };
+
+  handleLoginClick = () => {
+    this.setState({isLoggedIn: true});
+  }
+
+  handleLogoutClick = () => {
+    this.setState({isLoggedIn: false});
+  }
+
+  render(){
+    const isLoggedIn = this.state.isLoggedIn;
+    return (
+      <div>
+        <Greeting isLoggedIn = {isLoggedIn} />
+        {
+        isLoggedIn ? (
+          <LogoutButton onClick = {this.handleLogoutClick}/>
+        ) : (
+          <LoginButton onClick = {this.handleLoginClick}/>
+        )}
+      </div>
+    )
+
+  }
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <LoginControl />
     </div>
   );
 }
